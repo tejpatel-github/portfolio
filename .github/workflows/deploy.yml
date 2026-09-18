@@ -1,0 +1,80 @@
+name: CI/CD - Test and Deploy Portfolio
+
+# ---------- TRIGGERS ----------
+# "on" lists the events that start this workflow.
+on:
+  push:
+    branches: [main]      # every push to main: test AND deploy
+  pull_request:
+    branches: [main]      # every pull request into main: test ONLY (see the `if:` in the deploy job)
+  workflow_dispatch:      # adds a manual "Run workflow" button in the Actions tab
+
+# ---------- PERMISSIONS ----------
+# Every run gets a temporary access token. By default it may be powerful, so
+# we list exactly what this workflow needs and nothing more (the principle
+# of least privilege). If the workflow were ever compromised, the damage
+# is limited to these three things.
+permissions:
+  contents: read     # read your repo's code
+  pages: write       # publish to GitHub Pages
+  id-token: write    # lets Pages verify the deploy really came from THIS workflow
+
+# ---------- CONCURRENCY ----------
+# If you push twice quickly, cancel the older run so an old version can
+# never finish AFTER a newer one and overwrite it. The group name includes
+# the branch (github.ref), so a pull request's run never cancels a deploy
+# running on main.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ===== JOB 1: CI (the quality gate) =====
+  test:
+    runs-on: ubuntu-latest    # a fresh, disposable Linux virtual machine for every run
+    steps:
+      # The VM starts completely empty, so this step copies your repo into it.
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      # htmlhint is a Node tool, so we need Node.js on the VM.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # htmlhint scans for broken tags, missing <title>, duplicate ids, etc.
+      # If it finds errors it exits with a non-zero code, GitHub marks this
+      # job FAILED, and because `deploy` needs `test`, nothing gets published.
+      # npx downloads and runs the tool in one go; --yes skips the "install?" prompt.
+      - name: Lint HTML
+        run: npx --yes htmlhint@1 public/
+
+  # ===== JOB 2: CD (publish the site) =====
+  deploy:
+    needs: test                          # only starts if `test` succeeded
+    if: github.event_name == 'push'      # pull requests are tested but NEVER published
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      # Shows the live link on the workflow run page. It reads the output
+      # of the step with id "deployment" below.
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      # Zips up ONLY the public/ folder. Your README, workflow files, and
+      # .gitignore never go live.
+      - name: Package the site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      # The id is what lets the `url:` line above read this step's output.
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
