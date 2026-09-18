@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- Without this line, phones render a zoomed-out desktop layout. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Tejkumar Patel | Full-Stack Web Developer</title>
+
+    <!-- This text shows up under your link in Google results and link previews. -->
+    <meta
+      name="description"
+      content="Portfolio of Tejkumar Patel, a full-stack (MERN) and Odoo ERP developer based in Canada."
+    />
+
+    <!-- Dark background color for the browser UI on mobile (address bar). -->
+    <meta name="theme-color" content="#0a0e1a" />
+
+    <!-- FONTS: 'preconnect' opens the connection to Google early so the fonts
+       arrive faster. 'display=swap' shows fallback text immediately and swaps
+       in the real font when it loads, so visitors never see a blank page. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- ============ NAVBAR ============
+       <header> and <nav> are "semantic" tags: they tell screen readers and
+       search engines what each part of the page IS, not just how it looks. -->
+    <header class="site-header">
+      <a href="#top" class="logo">TP<span class="accent">.</span></a>
+      <nav id="site-nav">
+        <!-- Each href="#something" jumps to the element with that id. -->
+        <a href="#about">About</a>
+        <a href="#experience">Journey</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact" class="nav-cta">Contact</a>
+      </nav>
+      <!-- Hamburger button: only visible on small screens (CSS controls that).
+         The three <span>s are the three bars of the icon.
+         aria-expanded tells screen readers whether the menu is open, and
+         aria-controls tells them which element the button controls. -->
+      <button
+        class="menu-toggle"
+        id="menu-toggle"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        aria-controls="site-nav"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <main id="top">
+      <!-- ============ HERO ============ -->
+      <section class="hero">
+        <!-- Small code-style label above the name (uses the mono font). -->
+        <p class="eyebrow">&lt;hello world /&gt;</p>
+
+        <h1>Hi, I'm <span class="accent">Tejkumar Patel</span></h1>
+
+        <!-- TYPING EFFECT: script.js will type words into #typed one letter
+           at a time. The empty span is the target; the .cursor span is a
+           blinking bar styled in CSS. -->
+        <p class="typing-line">
+          I'm a <span id="typed"></span><span class="cursor">|</span>
+        </p>
+
+        <p class="hero-text">
+          I build clean, scalable web apps and automate business workflows. Open
+          to full-stack and Odoo roles across the GTA.
+        </p>
+
+        <div class="hero-buttons">
+          <a class="btn btn-primary" href="#projects">View Projects</a>
+          <a class="btn btn-ghost" href="#contact">Get in Touch</a>
+        </div>
+      </section>
+
+      <!-- ============ ABOUT ============ -->
+      <!-- class="reveal": script.js adds a fade-in animation to any element
+         with this class when it scrolls into view. -->
+      <section id="about" class="reveal">
+        <h2><span class="section-num">01.</span> About me</h2>
+
+        <div class="about-grid">
+          <div class="about-text">
+            <p>
+              I'm a full-stack developer with a Computer Engineering degree and
+              postgraduate training in Web Development from Conestoga College. I
+              build clean, maintainable web applications with the MERN stack and
+              customize Odoo ERP systems to automate real business workflows.
+            </p>
+            <p>
+              I like turning complex requirements into working features, and I
+              move fast in Agile teams. I'm currently open to full-stack,
+              software engineering, and Odoo developer roles (hybrid or remote).
+            </p>
+          </div>
+
+          <div class="skills">
+            <h3>Tech I work with</h3>
+            <!-- A <ul> (unordered list) is the correct tag for a list of
+               items; CSS will turn these into small pill-shaped tags. -->
+            <ul class="tags">
+              <li>JavaScript</li>
+              <li>React</li>
+              <li>HTML5 / CSS3</li>
+              <li>Node.js</li>
+              <li>Express.js</li>
+              <li>Python</li>
+              <li>PHP</li>
+              <li>ASP.NET</li>
+              <li>Odoo ORM</li>
+              <li>MySQL</li>
+              <li>MongoDB</li>
+              <li>Firebase</li>
+              <li>Git</li>
+              <li>Agile / Scrum</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ EXPERIENCE + EDUCATION (TIMELINE) ============
+         Newest first. Each .timeline-item is one milestone. CSS will draw
+         the vertical line and orange dots. -->
+      <section id="experience" class="reveal">
+        <h2><span class="section-num">02.</span> My journey</h2>
+
+        <div class="timeline">
+          <article class="timeline-item">
+            <p class="timeline-date">Jan 2024 – Apr 2025</p>
+            <h3>Postgraduate Degree, Web Development</h3>
+            <p class="timeline-place">Conestoga College</p>
+          </article>
+
+          <article class="timeline-item">
+            <p class="timeline-date">May 2023 – Oct 2023</p>
+            <h3>Odoo Developer</h3>
+            <p class="timeline-place">Mindphin Technologies Pvt. Ltd.</p>
+            <p>
+              Customized core Odoo ERP modules with Python, XML, and the Odoo
+              ORM. Built backend workflows that automated tasks, co-led module
+              deployments, and improved UI views with QWeb templates.
+            </p>
+          </article>
+
+          <article class="timeline-item">
+            <p class="timeline-date">Feb 2023 – Apr 2023</p>
+            <h3>Junior Odoo Developer</h3>
+            <p class="timeline-place">RDFlex</p>
+            <p>
+              Wrote reusable Python code and automation scripts that reduced
+              manual data work, and resolved high-priority bugs through
+              debugging, testing, and code reviews.
+            </p>
+          </article>
+
+          <article class="timeline-item">
+            <p class="timeline-date">Aug 2019 – May 2023</p>
+            <h3>Bachelor's Degree, Computer Engineering</h3>
+            <p class="timeline-place">Gujarat Technological University (GTU)</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============ PROJECTS ============
+         Intentionally empty! script.js generates one card per entry in a
+         data list, so adding a project later means editing one object,
+         not copy-pasting HTML. -->
+      <section id="projects" class="reveal">
+        <h2><span class="section-num">03.</span> Projects</h2>
+        <div id="project-grid" class="grid"></div>
+      </section>
+
+      <!-- ============ CONTACT ============ -->
+      <section id="contact" class="reveal">
+        <h2><span class="section-num">04.</span> Get in touch</h2>
+        <p class="contact-text">
+          I'm actively looking for new opportunities. Whether you have a role in
+          mind or just want to say hi, my inbox is open.
+        </p>
+
+        <a class="btn btn-primary" href="mailto:tejsdholu@gmail.com"
+          >Say hello</a
+        >
+
+        <ul class="socials">
+          <!-- target="_blank" opens a new tab. rel="noopener noreferrer"
+             stops the new tab from getting a handle back to this page
+             (a known security hole called "tab-nabbing"). -->
+          <li>
+            <a
+              href="https://github.com/tejpatel-github"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GitHub</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.linkedin.com/in/pateltejkumar/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >LinkedIn</a
+            >
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <!-- #year is filled in by script.js so the date never goes stale. -->
+      <p>
+        &copy; <span id="year"></span> Tejkumar Patel. Built with HTML, CSS
+        &amp; JS.
+      </p>
+    </footer>
+
+    <!-- "defer" = download now, run only after the HTML is fully read.
+       That guarantees #typed and #project-grid exist when the script looks
+       for them. -->
+    <script src="script.js" defer>
+      /* Runs immediately, before the page is drawn. Adding the "js" class to
+      <html> tells the CSS "JavaScript is available, so it's safe to hide
+      .reveal sections until they scroll into view." If JS is disabled, this
+      never runs and the content simply stays visible. */
+      document.documentElement.classList.add("js");
+    </script>
+  </body>
+</html>

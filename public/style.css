@@ -1,0 +1,527 @@
+/* =====================================================
+   1. DESIGN TOKENS
+   CSS variables ("custom properties") live in ONE place.
+   To re-theme the whole site later, edit only these
+   values. Nothing else in the file hard-codes a color.
+   ===================================================== */
+:root {
+  --bg: #0a0e1a; /* page background: near-black navy */
+  --card: #111827; /* slightly lighter surface for cards */
+  --border: #1f2937; /* subtle outlines */
+  --text: #e5e9f0; /* main text: soft off-white (pure white is harsh on dark) */
+  --muted: #8b95a7; /* secondary text */
+  --accent: #f97316; /* vivid orange */
+  --accent-2: #fbbf24; /* warm amber, used with orange for the "ember" gradient */
+
+  --font-head: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* The extra names after each font are FALLBACKS: if Google Fonts fails
+     to load, the browser uses the next one instead of a random default. */
+
+  --max-width: 960px;
+}
+
+/* =====================================================
+   2. BASE / RESET
+   ===================================================== */
+* {
+  box-sizing: border-box;
+}
+/* By default, padding is ADDED to an element's width, which makes layout
+   math painful. border-box includes padding and border in the width. */
+
+html {
+  scroll-behavior: smooth;
+} /* animated jumps for #anchor links */
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  overflow-x: clip;   /* NEW: anything wider than the screen is cut off instead of causing sideways scroll */
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-head);
+  line-height: 1.2;
+  margin: 0 0 1rem;
+}
+p {
+  margin: 0 0 1rem;
+}
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* :focus-visible only shows for KEYBOARD users (Tab key), so the site is
+   accessible without putting ugly outlines on every mouse click. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+/* One rule centers every major block: fixed max width + auto side margins. */
+section,
+.site-header,
+footer {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+/* Sticky navbar offset: when a link jumps to a section, stop this far
+   BELOW the top of the screen. 5rem = navbar height (~70px) plus the 30px
+   the reveal animation slides up after the scroll lands. */
+section,
+main {
+  scroll-margin-top: 5rem;
+}
+
+/* Section headings: "01. About me" */
+h2 {
+  font-size: clamp(1.6rem, 4vw, 2rem);
+  margin-bottom: 2rem;
+}
+.section-num {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 0.9em;
+}
+
+/* =====================================================
+   3. NAVBAR
+   ===================================================== */
+.site-header {
+  position: sticky; /* stays at the top while scrolling */
+  top: 0;
+  z-index: 10; /* keeps it ABOVE other content */
+  max-width: none; /* let the bar span the full width... */
+  padding: 1rem max(1.5rem, calc((100% - var(--max-width)) / 2 + 1.5rem));
+  /* ...but this padding keeps the logo/links lined up with the 960px content
+     column. max() picks whichever value is larger. */
+  display: flex;
+  justify-content: space-between; /* logo left, nav right */
+  align-items: center;
+  background: rgba(10, 14, 26, 0.8); /* translucent so content shows through */
+  backdrop-filter: blur(10px); /* frosted-glass effect */
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--text);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+nav a {
+  color: var(--muted);
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+nav a:hover {
+  color: var(--accent);
+}
+
+.nav-cta {
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.35rem 1rem;
+  border-radius: 6px;
+}
+.nav-cta:hover {
+  background: rgba(249, 115, 22, 0.1);
+}
+
+/* ----- Hamburger button (hidden on desktop, shown on mobile) ----- */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0 9px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.menu-toggle span {
+  display: block;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition:
+    transform 0.25s,
+    opacity 0.25s;
+}
+
+/* When open, the 3 bars morph into an X. Each bar is 2px tall with a 5px
+   gap, so the centers are 7px apart. Moving the top and bottom bars 7px
+   toward the middle, then rotating them, forms the X. The middle bar fades. */
+.menu-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* =====================================================
+   4. HERO
+   ===================================================== */
+.hero {
+  position: relative; /* lets the glow below be positioned relative to THIS box */
+  padding-block: 7rem 6rem;
+}
+
+/* The orange glow: a pseudo-element (an extra box created by CSS alone, so
+   no extra HTML needed) filled with a radial gradient that fades to
+   transparent. z-index: -1 places it BEHIND the text. */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  right: 0; /* was -10%: a NEGATIVE offset pushed the box outside the page, creating horizontal scroll */
+  width: min(
+    480px,
+    100%
+  ); /* min() picks the smaller value: 480px on big screens, but never wider than the hero itself on small ones */
+  aspect-ratio: 1; /* keeps the box square whatever the width, so the glow stays circular */
+  background: radial-gradient(
+    circle,
+    rgba(249, 115, 22, 0.22),
+    transparent 65%
+  );
+  z-index: -1;
+  pointer-events: none; /* clicks pass straight through the glow */
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 7vw, 4rem);
+}
+/* clamp(min, preferred, max): the size scales with screen width but never
+   goes below 2.2rem or above 4rem. That's responsive text with no media queries. */
+
+.typing-line {
+  font-family: var(--font-mono);
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  color: var(--accent-2);
+  min-height: 1.6em; /* reserves the line's height so the page doesn't jump while typing */
+}
+
+.cursor {
+  color: var(--accent);
+  animation: blink 1s step-end infinite;
+}
+/* step-end makes it snap on/off like a real cursor instead of fading. */
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.hero-text {
+  max-width: 540px;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* =====================================================
+   5. BUTTONS
+   ===================================================== */
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    var(--accent-2)
+  ); /* the ember gradient */
+  color: #0a0e1a; /* dark text on orange = strong contrast */
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.35); /* the "glow" */
+}
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(249, 115, 22, 0.6);
+}
+
+.btn-ghost {
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* =====================================================
+   6. ABOUT + SKILL TAGS
+   ===================================================== */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr; /* text gets 1.4 parts, skills 1 part */
+  gap: 3rem;
+}
+.about-text p {
+  color: var(--muted);
+}
+.skills h3 {
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+/* Shared by skill tags (here) and project tags (later). */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.tags li {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent-2);
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  border-radius: 999px; /* huge radius = perfect pill shape */
+  padding: 0.2rem 0.8rem;
+}
+
+/* =====================================================
+   7. TIMELINE
+   Technique: the vertical line is ONE ::before on the container;
+   each dot is a ::before on its item, positioned over the line.
+   ===================================================== */
+.timeline {
+  position: relative;
+  padding-left: 2rem; /* room for the line + dots */
+  border-left: 2px solid var(--border); /* the vertical line itself */
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: calc(
+    -2rem - 7px
+  ); /* shift left by the padding + half the dot so it sits centered ON the line */
+  top: 0.45rem;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent); /* glowing dot */
+}
+
+.timeline-date {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+.timeline-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+.timeline-place {
+  color: var(--text);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.timeline-item p:last-child {
+  color: var(--muted);
+}
+
+/* =====================================================
+   8. PROJECT CARDS (filled by JavaScript in the next step)
+   ===================================================== */
+.grid {
+  display: grid;
+  /* auto-fill + minmax = responsive grid with ZERO media queries:
+     "fit as many columns of at least 280px as possible, and share the
+     leftover space". Phone = 1 column, laptop = 3, automatically. */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition:
+    transform 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent); /* border lights up orange */
+  box-shadow: 0 8px 30px rgba(249, 115, 22, 0.15); /* soft glow underneath */
+}
+.card h3 {
+  font-size: 1.2rem;
+}
+.card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.card-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* =====================================================
+   9. CONTACT + FOOTER
+   ===================================================== */
+.contact-text {
+  max-width: 540px;
+  color: var(--muted);
+}
+.socials {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 2rem 0 0;
+  list-style: none;
+}
+.socials a {
+  color: var(--muted);
+}
+.socials a:hover {
+  color: var(--accent);
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+/* =====================================================
+   10. SCROLL-REVEAL ANIMATION
+   IMPORTANT DESIGN CHOICE: sections are hidden ONLY when the <html> tag
+   has a class called "js". script.js will add that class itself, so if
+   JavaScript ever fails to load, your content is still visible instead
+   of being stuck invisible.
+   ===================================================== */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+.js .reveal.visible {
+  opacity: 1;
+  transform: none;
+} /* JS adds .visible on scroll */
+
+/* Respect users who set "reduce motion" in their OS (motion sensitivity). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js .reveal {
+    transition: none;
+  }
+  .cursor {
+    animation: none;
+  }
+}
+
+/* =====================================================
+   11. MOBILE TWEAKS
+   ===================================================== */
+@media (max-width: 700px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  } /* stack text above skills */
+  .hero {
+    padding-block: 4rem;
+  }
+
+  .menu-toggle {
+    display: flex;
+  } /* show the hamburger */
+
+  /* The nav becomes a dropdown panel. It's positioned relative to the
+     sticky header (a sticky element counts as "positioned"), and top: 100%
+     places it exactly below the header bar. Hidden until JS adds .nav-open. */
+  nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0.5rem 1.5rem 1.5rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .site-header.nav-open nav {
+    display: flex;
+  }
+
+  nav a {
+    padding: 0.9rem 0;
+  } /* bigger tap targets for thumbs */
+  .nav-cta {
+    text-align: center;
+    margin-top: 0.5rem;
+    padding: 0.7rem 1rem;
+  }
+}

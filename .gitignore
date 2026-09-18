@@ -1,0 +1,17 @@
+# Dependencies (we may add Node tooling later; these folders are huge and rebuildable)
+node_modules/
+
+# Operating system junk files
+.DS_Store
+Thumbs.db
+
+# Editor settings (personal preference, not part of the site)
+.vscode/
+
+# Log files
+*.log
+
+# Safety net: your resume contains your phone number and a second email.
+# If a copy ever lands in this folder, Git will refuse to track it, so it
+# can't be published by accident.
+Profile.pdf
