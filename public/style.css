@@ -246,7 +246,7 @@ nav a:hover {
 }
 
 .hero-text {
-  max-width: 540px;
+  max-width: 34rem;
   color: var(--muted);
   font-size: 1.1rem;
 }
@@ -421,11 +421,19 @@ nav a:hover {
   font-size: 0.9rem;
 }
 
+/* grid-column: 1 / -1 makes the message span every column of the grid,
+   so it reads as one line of text instead of sitting in a narrow column. */
+.projects-empty {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  margin: 0;
+}
+
 /* =====================================================
    9. CONTACT + FOOTER
    ===================================================== */
 .contact-text {
-  max-width: 540px;
+  max-width: 34rem;
   color: var(--muted);
 }
 .socials {
