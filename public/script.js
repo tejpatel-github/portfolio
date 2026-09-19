@@ -7,30 +7,30 @@
    (course projects count!) before sharing the site with employers.
    ===================================================== */
 const projects = [
-  {
-    title: "Project One (placeholder)",
-    description:
-      "A full-stack MERN app. Replace this with what it does and the problem it solves.",
-    tags: ["React", "Node.js", "MongoDB"],
-    github: "https://github.com/tejpatel-github",
-    demo: "", // an empty string means "no demo link", so the button is skipped
-  },
-  {
-    title: "Project Two (placeholder)",
-    description:
-      "An Odoo module or automation. Describe the business workflow you improved.",
-    tags: ["Python", "Odoo ORM", "XML"],
-    github: "https://github.com/tejpatel-github",
-    demo: "",
-  },
-  {
-    title: "Project Three (placeholder)",
-    description:
-      "A frontend project. Describe the tech, the challenge, and the result.",
-    tags: ["JavaScript", "HTML5", "CSS3"],
-    github: "https://github.com/tejpatel-github",
-    demo: "",
-  },
+  //   {
+  //     title: "Project One (placeholder)",
+  //     description:
+  //       "A full-stack MERN app. Replace this with what it does and the problem it solves.",
+  //     tags: ["React", "Node.js", "MongoDB"],
+  //     github: "https://github.com/tejpatel-github",
+  //     demo: "", // an empty string means "no demo link", so the button is skipped
+  //   },
+  //   {
+  //     title: "Project Two (placeholder)",
+  //     description:
+  //       "An Odoo module or automation. Describe the business workflow you improved.",
+  //     tags: ["Python", "Odoo ORM", "XML"],
+  //     github: "https://github.com/tejpatel-github",
+  //     demo: "",
+  //   },
+  //   {
+  //     title: "Project Three (placeholder)",
+  //     description:
+  //       "A frontend project. Describe the tech, the challenge, and the result.",
+  //     tags: ["JavaScript", "HTML5", "CSS3"],
+  //     github: "https://github.com/tejpatel-github",
+  //     demo: "",
+  //   },
 ];
 
 /* =====================================================
@@ -52,6 +52,19 @@ function makeLink(url, label) {
 function renderProjects() {
   const grid = document.getElementById("project-grid");
   if (!grid) return; // safety: do nothing if the container is missing
+
+  // With no projects yet, show an honest status message instead of an
+  // empty gap. The early return skips the card-building code below.
+  if (projects.length === 0) {
+    const note = document.createElement("p");
+    note.className = "projects-empty";
+    note.textContent =
+      "Three full-stack projects are currently in progress: an inventory and " +
+      "order management app, an appointment booking system, and an AI " +
+      "document Q&A tool. They'll appear here as each one ships.";
+    grid.appendChild(note);
+    return;
+  }
 
   projects.forEach((project) => {
     const card = document.createElement("article");
@@ -94,7 +107,7 @@ function startTyping() {
   const target = document.getElementById("typed");
   if (!target) return;
 
-  const roles = ["Web Developer", "Full-Stack Engineer", "Odoo ERP Developer"];
+  const roles = ["Web Developer", "Full-Stack Engineer", "Software Engineer"];
 
   // Accessibility: if the visitor's OS says "reduce motion", skip the
   // animation and just show the first role as plain text.
