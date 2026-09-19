@@ -19,7 +19,7 @@
   /* The extra names after each font are FALLBACKS: if Google Fonts fails
      to load, the browser uses the next one instead of a random default. */
 
-  --max-width: 960px;
+  --max-width: 60rem;
 }
 
 /* =====================================================
@@ -41,7 +41,7 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.7;
-  overflow-x: clip;   /* NEW: anything wider than the screen is cut off instead of causing sideways scroll */
+  overflow-x: clip; /* NEW: anything wider than the screen is cut off instead of causing sideways scroll */
 }
 
 h1,
@@ -202,7 +202,7 @@ nav a:hover {
   top: -10%;
   right: 0; /* was -10%: a NEGATIVE offset pushed the box outside the page, creating horizontal scroll */
   width: min(
-    480px,
+    30rem,
     100%
   ); /* min() picks the smaller value: 480px on big screens, but never wider than the hero itself on small ones */
   aspect-ratio: 1; /* keeps the box square whatever the width, so the glow stays circular */
@@ -524,4 +524,21 @@ footer {
     margin-top: 0.5rem;
     padding: 0.7rem 1rem;
   }
+}
+
+/* =====================================================
+   12. LARGE SCREENS
+   Everything is sized in rem, so raising the root font size scales the
+   whole site (text, spacing, and the content column) in one move, with
+   no need to touch individual rules. 100% = 16px normally.
+   ===================================================== */
+@media (min-width: 1800px) {
+  html {
+    font-size: 112.5%;
+  } /* 18px: full HD and up */
+}
+@media (min-width: 2400px) {
+  html {
+    font-size: 137.5%;
+  } /* 22px: 4K and ultrawide. The column becomes 60rem = 1320px */
 }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <!-- SVG is a vector format, so it stays sharp at any size, and it's
+       tiny. A dark rounded square with orange "TP" matches your logo. -->
+    <rect width="64" height="64" rx="14" fill="#0a0e1a" />
+    <text x="32" y="43" font-family="Arial, sans-serif" font-size="30" font-weight="700" text-anchor="middle" fill="#f97316">TP</text>
+</svg>
